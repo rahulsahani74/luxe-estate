@@ -3,152 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX FITNESS - Build Your Beast Mode</title>
+    <title>LuxeEstate - Premium Real Estate & Property Management</title>
+    <meta name="description" content="Discover luxury homes, apartments, and commercial properties with LuxeEstate - Your trusted real estate partner">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&family=Barlow:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Particles.js for background animation -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <style>
+        :root {
+            --primary: #d4af37;
+            --secondary: #1a1a1a;
+            --accent: #c19a6b;
+            --light: #ffffff;
+            --dark: #0f0f0f;
+            --gray: #666666;
+            --gray-light: #f5f5f5;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        :root {
-            --primary-bg: #0a0a0a;
-            --secondary-bg: #121212;
-            --card-bg: #1a1a1a;
-            --neon-red: #ff0040;
-            --neon-green: #00ff88;
-            --accent: var(--neon-red);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --glow: 0 0 20px var(--accent), 0 0 40px var(--accent);
-        }
-
+        
         html {
             scroll-behavior: smooth;
         }
-
+        
         body {
-            font-family: 'Barlow', sans-serif;
-            background: var(--primary-bg);
-            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            color: var(--secondary);
             overflow-x: hidden;
             line-height: 1.6;
-            position: relative;
         }
-
-        /* Animated Background */
-        #particles-js {
+        
+        /* Scroll to Top Button */
+        .scroll-top {
             position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            background: radial-gradient(ellipse at bottom, #1a0a0a 0%, #0a0a0a 100%);
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
         }
-
-        /* Background overlay for depth */
-        #particles-js::after {
-            content: '';
+        
+        .scroll-top:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+        }
+        
+        .scroll-top.active {
+            display: flex;
+        }
+        
+        /* Chatbot Widget */
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9998;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 1.8rem;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
+        }
+        
+        .chatbot-window {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 0, 64, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
-            pointer-events: none;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: var(--light);
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
         }
-
-        /* All content above particles */
-        nav, section, footer, .floating-buttons, .sticky-join, .chatbot-container, .scroll-to-top {
-            position: relative;
-            z-index: 10;
+        
+        .chatbot-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
         }
-
-        /* Custom Cursor */
-        body {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="rgba(255,0,64,0.3)" stroke="%23ff0040" stroke-width="2"/></svg>') 10 10, auto;
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-
-        a, button {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10" fill="rgba(255,0,64,0.5)" stroke="%23ff0040" stroke-width="2"/></svg>') 12 12, pointer;
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--light);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        /* Smooth Scrolling Container */
-        .smooth-scroll-container {
-            will-change: transform;
+        
+        .chatbot-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
         }
-
+        
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+        
+        .chatbot-message {
+            margin-bottom: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chatbot-message.bot {
+            text-align: left;
+        }
+        
+        .chatbot-message.user {
+            text-align: right;
+        }
+        
+        .message-bubble {
+            display: inline-block;
+            padding: 0.8rem 1.2rem;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .chatbot-message.bot .message-bubble {
+            background: var(--light);
+            color: var(--secondary);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .chatbot-message.user .message-bubble {
+            background: var(--primary);
+            color: var(--light);
+        }
+        
+        .chatbot-input-area {
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chatbot-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .chatbot-send {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50%;
+            color: var(--light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
         /* Navigation */
         nav {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 0, 64, 0.2);
-            padding: 1rem 2rem;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px var(--shadow);
             transition: all 0.3s ease;
         }
-
-        nav.scrolled {
-            padding: 0.5rem 2rem;
-            background: rgba(10, 10, 10, 0.95);
-            box-shadow: 0 4px 30px rgba(255, 0, 64, 0.1);
-        }
-
+        
         .logo {
-            font-family: 'Teko', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 0, 64, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: var(--secondary);
         }
-
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 1.5rem;
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             list-style: none;
+            align-items: center;
         }
-
+        
         .nav-links a {
-            color: var(--text-primary);
+            color: var(--secondary);
             text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
             position: relative;
-            transition: all 0.3s ease;
         }
-
+        
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -156,764 +298,461 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--accent);
+            background: var(--primary);
             transition: width 0.3s ease;
-            box-shadow: var(--glow);
         }
-
+        
         .nav-links a:hover {
-            color: var(--accent);
+            color: var(--primary);
         }
-
+        
         .nav-links a:hover::after {
             width: 100%;
         }
-
+        
         .nav-cta {
-            padding: 0.75rem 1.5rem;
-            background: var(--accent);
-            border: none;
-            color: white;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.4);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--light) !important;
+            padding: 0.7rem 1.8rem;
+            border-radius: 25px;
+            font-weight: 600;
         }
-
+        
+        .nav-cta::after {
+            display: none;
+        }
+        
         .nav-cta:hover {
+            color: var(--light) !important;
             transform: translateY(-2px);
-            box-shadow: var(--glow);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
-
-        /* Mobile Menu Toggle */
-        .mobile-menu-toggle {
+        
+        .menu-toggle {
             display: none;
             flex-direction: column;
             gap: 5px;
-            background: none;
-            border: none;
-            padding: 0.5rem;
+            cursor: pointer;
         }
-
-        .mobile-menu-toggle span {
-            width: 30px;
+        
+        .menu-toggle span {
+            width: 25px;
             height: 3px;
-            background: var(--accent);
+            background: var(--secondary);
             transition: all 0.3s ease;
-            box-shadow: 0 0 10px var(--accent);
         }
-
+        
+        /* Three.js Canvas */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
         /* Hero Section */
         .hero {
             height: 100vh;
-            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
             overflow: hidden;
         }
-
-        .hero-3d-container {
+        
+        .hero-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                        url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80') center/cover;
+            z-index: -1;
         }
-
-        .hero-3d-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 10, 0.7) 100%);
-            z-index: 2;
-        }
-
+        
         .hero-content {
-            position: relative;
-            z-index: 3;
             text-align: center;
-            padding: 2rem;
-            max-width: 1200px;
+            color: var(--light);
+            max-width: 1000px;
+            padding: 0 2rem;
+            opacity: 0;
+            transform: translateY(50px);
         }
-
-        .hero-title {
-            font-family: 'Teko', sans-serif;
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-weight: 700;
-            line-height: 0.9;
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
             letter-spacing: 3px;
             text-transform: uppercase;
+            color: var(--primary);
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 50%, #ffffff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 80px rgba(255, 0, 64, 0.8);
-            animation: titleGlow 3s ease-in-out infinite;
+            font-weight: 500;
         }
-
-        @keyframes titleGlow {
-            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 0, 64, 0.8)); }
-            50% { filter: drop-shadow(0 0 40px rgba(255, 0, 64, 1)); }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
         }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            font-weight: 400;
-            letter-spacing: 2px;
+        
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
         }
-
-        .cta-buttons {
+        
+        .hero-buttons {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
         }
-
-        .cta-btn {
-            padding: 1.25rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        
+        .btn-primary,
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
             border: none;
-            border-radius: 4px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
             text-decoration: none;
             display: inline-block;
+            transition: all 0.3s ease;
         }
-
-        .cta-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--light);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
         }
-
-        .cta-btn:hover::before {
-            width: 300px;
-            height: 300px;
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
         }
-
-        .cta-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 0 30px rgba(255, 0, 64, 0.5);
-        }
-
-        .cta-primary:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: var(--glow), 0 10px 30px rgba(255, 0, 64, 0.3);
-        }
-
-        .cta-secondary {
+        
+        .btn-secondary {
             background: transparent;
-            color: white;
-            border: 2px solid var(--accent);
+            color: var(--light);
+            border: 2px solid var(--light);
         }
-
-        .cta-secondary:hover {
-            transform: translateY(-5px) scale(1.05);
-            background: rgba(255, 0, 64, 0.1);
-            box-shadow: 0 0 30px rgba(255, 0, 64, 0.3);
+        
+        .btn-secondary:hover {
+            background: var(--light);
+            color: var(--secondary);
+            transform: translateY(-3px);
         }
-
+        
+        /* Search Box */
+        .search-box {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            width: 90%;
+            opacity: 0;
+        }
+        
+        .search-field {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .search-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .search-field select,
+        .search-field input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+        }
+        
+        .search-btn {
+            padding: 0 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--light);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
         /* Section Styles */
         section {
-            padding: 6rem 2rem;
-            position: relative;
+            padding: 6rem 5%;
         }
-
-        .section-title {
-            font-family: 'Teko', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 700;
+        
+        .section-header {
             text-align: center;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
             margin-bottom: 4rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            opacity: 0;
+            transform: translateY(30px);
         }
-
-        /* Why Choose Us */
-        .features-grid {
+        
+        .section-subtitle {
+            color: var(--primary);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-description {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Featured Properties */
+        .properties-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        .feature-card {
-            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(26, 26, 26, 0.5) 100%);
-            border: 1px solid rgba(255, 0, 64, 0.2);
-            border-radius: 12px;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+        
+        .property-card {
+            background: var(--light);
+            border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 5px 25px var(--shadow);
+            transition: all 0.5s ease;
             opacity: 0;
             transform: translateY(50px);
         }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 0, 64, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+        
+        .property-card:hover {
+            transform: translateY(-10px) rotateY(2deg);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
         }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            border-color: var(--accent);
-            box-shadow: 0 20px 60px rgba(255, 0, 64, 0.3);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            transition: all 0.4s ease;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: rotateY(360deg) scale(1.2);
-            filter: drop-shadow(0 0 20px var(--accent));
-        }
-
-        .feature-title {
-            font-family: 'Teko', sans-serif;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
-        /* Programs Section */
-        .programs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .program-card {
-            background: var(--card-bg);
-            border: 2px solid transparent;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.4s ease;
+        
+        .property-image {
             position: relative;
+            height: 280px;
             overflow: hidden;
-            opacity: 0;
-            transform: scale(0.8);
         }
-
-        .program-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 0, 64, 0.2), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .program-card:hover::after {
-            left: 100%;
-        }
-
-        .program-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 50px rgba(255, 0, 64, 0.4);
-        }
-
-        .program-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .program-card:hover .program-icon {
-            transform: rotateY(180deg) scale(1.2);
-        }
-
-        .program-title {
-            font-family: 'Teko', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .program-description {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Trainers Section */
-        .trainers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .trainer-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 0, 64, 0.1);
-            opacity: 0;
-            transform: translateY(50px) rotateX(10deg);
-        }
-
-        .trainer-card:hover {
-            transform: translateY(-20px) rotateX(0deg) rotateY(5deg);
-            border-color: var(--accent);
-            box-shadow: 0 25px 70px rgba(255, 0, 64, 0.4);
-        }
-
-        .trainer-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            overflow: hidden;
-            position: relative;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .trainer-image img {
+        
+        .property-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .trainer-image::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: linear-gradient(to top, var(--card-bg), transparent);
-        }
-
-        .trainer-info {
-            padding: 2rem;
-        }
-
-        .trainer-name {
-            font-family: 'Teko', sans-serif;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .trainer-specialty {
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        .trainer-experience {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        .trainer-socials {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 1.2rem;
-        }
-
-        .social-icon:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-5px) rotate(360deg);
-            box-shadow: 0 5px 20px rgba(255, 0, 64, 0.5);
-        }
-
-        /* Transformation Gallery */
-        .transformation-slider {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .transformation-track {
-            display: flex;
-            gap: 2rem;
-            padding: 2rem 0;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .transformation-track::-webkit-scrollbar {
-            display: none;
-        }
-
-        .transformation-card {
-            min-width: 350px;
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 0, 64, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            scroll-snap-align: center;
-            transition: all 0.4s ease;
-        }
-
-        .transformation-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 20px 60px rgba(255, 0, 64, 0.3);
-            transform: scale(1.05);
-        }
-
-        .transformation-images {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .transformation-img {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .transformation-label {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--accent);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .transformation-details {
-            text-align: center;
-        }
-
-        .transformation-name {
-            font-family: 'Teko', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .transformation-stats {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Membership Plans */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            background: var(--card-bg);
-            border: 2px solid rgba(255, 0, 64, 0.2);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        .pricing-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--accent) 0%, #ff6b9d 100%);
-            transform: scaleX(0);
             transition: transform 0.5s ease;
         }
-
-        .pricing-card:hover::before {
-            transform: scaleX(1);
+        
+        .property-card:hover .property-image img {
+            transform: scale(1.1);
         }
-
-        .pricing-card:hover {
-            transform: translateY(-20px) scale(1.05);
-            border-color: var(--accent);
-            box-shadow: 0 30px 80px rgba(255, 0, 64, 0.4);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-            box-shadow: 0 20px 60px rgba(255, 0, 64, 0.3);
-        }
-
-        .pricing-card.featured::before {
-            transform: scaleX(1);
-        }
-
-        .popular-badge {
+        
+        .property-badge {
             position: absolute;
             top: 20px;
-            right: -35px;
-            background: var(--accent);
-            color: white;
-            padding: 0.5rem 3rem;
-            transform: rotate(45deg);
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(255, 0, 64, 0.5);
-        }
-
-        .plan-name {
-            font-family: 'Teko', sans-serif;
-            font-size: 2rem;
+            right: 20px;
+            background: var(--primary);
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
-
-        .plan-price {
-            font-size: 4rem;
+        
+        .property-details {
+            padding: 1.8rem;
+        }
+        
+        .property-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
             font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+        
+        .property-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-
-        .plan-period {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .plan-features {
-            list-style: none;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .plan-features li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-        }
-
-        .plan-features li::before {
-            content: '✓';
-            color: var(--accent);
-            font-weight: 700;
-            margin-right: 1rem;
-        }
-
-        .plan-btn {
-            width: 100%;
-            padding: 1rem;
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: white;
-            font-weight: 700;
-            text-transform: uppercase;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .plan-btn:hover {
-            background: var(--accent);
-            box-shadow: 0 10px 30px rgba(255, 0, 64, 0.5);
-            transform: translateY(-3px);
-        }
-
-        /* Testimonials */
-        .testimonials-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .testimonials-track {
+        
+        .property-location {
+            color: var(--gray);
+            margin-bottom: 1.2rem;
             display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .property-features {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .feature i {
+            color: var(--primary);
+        }
+        
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            animation: scroll 30s linear infinite;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-
-        .testimonials-track:hover {
-            animation-play-state: paused;
+        
+        .service-card {
+            background: var(--light);
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 25px var(--shadow);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(30px) rotateX(10deg);
         }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        
+        .service-card:hover {
+            transform: translateY(-10px) rotateX(0);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.2);
         }
-
-        .testimonial-card {
-            min-width: 350px;
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 0, 64, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.4s ease;
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--light);
         }
-
-        .testimonial-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 15px 50px rgba(255, 0, 64, 0.3);
-            transform: translateY(-10px);
-        }
-
-        .testimonial-rating {
-            color: #ffd700;
+        
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
             margin-bottom: 1rem;
+            color: var(--secondary);
         }
-
+        
+        .service-card p {
+            color: var(--gray);
+            line-height: 1.8;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background: var(--gray-light);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-card {
+            background: var(--light);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px var(--shadow);
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        
+        .testimonial-rating {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
         .testimonial-text {
-            color: var(--text-secondary);
+            color: var(--gray);
+            font-size: 1.05rem;
             line-height: 1.8;
             margin-bottom: 1.5rem;
             font-style: italic;
         }
-
+        
         .testimonial-author {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
+        
+        .author-image {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
+            object-fit: cover;
+            border: 3px solid var(--primary);
         }
-
+        
         .author-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
+            font-weight: 600;
+            color: var(--secondary);
         }
-
+        
         .author-info p {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+            color: var(--gray);
+            font-size: 0.9rem;
         }
-
+        
         /* Contact Section */
         .contact-container {
             max-width: 1200px;
@@ -922,1639 +761,1087 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
         }
-
+        
         .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            opacity: 0;
+            transform: translateX(-30px);
         }
-
+        
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
         .contact-item {
             display: flex;
             align-items: flex-start;
             gap: 1.5rem;
-            padding: 1.5rem;
-            background: rgba(26, 26, 26, 0.5);
-            border: 1px solid rgba(255, 0, 64, 0.2);
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            margin-bottom: 2rem;
         }
-
-        .contact-item:hover {
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(255, 0, 64, 0.3);
-            transform: translateX(10px);
-        }
-
+        
         .contact-icon {
-            font-size: 2rem;
-            color: var(--accent);
-        }
-
-        .contact-details h3 {
-            font-family: 'Teko', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-details p {
-            color: var(--text-secondary);
-        }
-
-        .map-container {
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 0, 64, 0.2);
-            height: 100%;
-            min-height: 400px;
-            background: var(--card-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .map-placeholder {
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .map-placeholder svg {
-            font-size: 4rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        /* Floating Action Buttons */
-        .floating-buttons {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 999;
-        }
-
-        .floating-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            background: var(--accent);
-            color: white;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(255, 0, 64, 0.4);
-        }
-
-        .floating-btn:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: var(--glow);
-        }
-
-        .sticky-join {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 1rem 2.5rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 40px rgba(255, 0, 64, 0.5);
-            z-index: 998;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .sticky-join.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .sticky-join:hover {
-            transform: translateX(-50%) scale(1.05);
-            box-shadow: var(--glow);
-        }
-
-        /* Scroll to Top Button */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 140px;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 999;
-            box-shadow: 0 5px 25px rgba(255, 0, 64, 0.4);
-        }
-
-        .scroll-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-to-top:hover {
-            transform: translateY(-10px) rotate(360deg);
-            box-shadow: var(--glow);
-        }
-
-        .scroll-to-top i {
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Chatbot Styles */
-        .chatbot-container {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 1000;
-        }
-
-        .chatbot-toggle {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 8px 30px rgba(255, 0, 64, 0.5);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chatbot-toggle::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .chatbot-toggle:hover::before {
-            width: 100px;
-            height: 100px;
-        }
-
-        .chatbot-toggle:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: var(--glow);
-        }
-
-        .chatbot-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 25px;
-            height: 25px;
-            background: #00ff88;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #000;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
-            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
-        }
-
-        .chatbot-window {
-            position: absolute;
-            bottom: 90px;
-            right: 0;
-            width: 380px;
-            height: 550px;
-            background: rgba(26, 26, 26, 0.98);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--accent);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 0, 64, 0.3);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .chatbot-window.active {
-            display: flex;
-        }
-
-        .chatbot-header {
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chatbot-header-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .chatbot-avatar {
-            width: 45px;
-            height: 45px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .chatbot-header-text h3 {
-            font-family: 'Teko', sans-serif;
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        .chatbot-header-text p {
-            font-size: 0.8rem;
-            margin: 0;
-            opacity: 0.9;
-        }
-
-        .chatbot-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .chatbot-close:hover {
-            transform: rotate(90deg);
-        }
-
-        .chatbot-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .chatbot-messages::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .chatbot-messages::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .chatbot-messages::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 3px;
-        }
-
-        .chat-message {
-            display: flex;
-            gap: 0.75rem;
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .chat-message.user {
-            flex-direction: row-reverse;
-        }
-
-        .message-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
+            color: var(--light);
+            font-size: 1.3rem;
             flex-shrink: 0;
         }
-
-        .message-content {
-            background: rgba(255, 255, 255, 0.05);
+        
+        .contact-text h4 {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+        }
+        
+        .contact-text p {
+            color: var(--gray);
+        }
+        
+        .contact-form-container {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
             padding: 1rem;
-            border-radius: 15px;
-            max-width: 70%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chat-message.user .message-content {
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            border: none;
-        }
-
-        .message-time {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .chatbot-quick-replies {
-            padding: 0.5rem 1.5rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .quick-reply-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(255, 0, 64, 0.2);
-            border: 1px solid var(--accent);
-            border-radius: 20px;
-            color: white;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quick-reply-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .chatbot-input-area {
-            padding: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 1rem;
-        }
-
-        .chatbot-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 0.75rem 1.25rem;
-            color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
             font-size: 0.95rem;
             transition: all 0.3s ease;
         }
-
-        .chatbot-input:focus {
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(255, 0, 64, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
-
-        .chatbot-input::placeholder {
-            color: var(--text-secondary);
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
         }
-
-        .chatbot-send {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chatbot-send:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 5px 20px rgba(255, 0, 64, 0.5);
-        }
-
-        /* Social Media Icons Enhancement */
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-icon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--accent);
-            transform: scale(0);
-            transition: transform 0.3s ease;
-            border-radius: 50%;
-        }
-
-        .social-icon i {
-            position: relative;
-            z-index: 1;
-        }
-
-        .social-icon:hover::before {
-            transform: scale(1);
-        }
-
-        .social-icon:hover {
-            color: white;
-            transform: translateY(-5px) rotate(360deg);
-            box-shadow: 0 5px 20px rgba(255, 0, 64, 0.5);
-        }
-
-        .footer-social a {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 1.3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .footer-social a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--accent);
-            transform: scale(0);
-            transition: transform 0.3s ease;
-            border-radius: 50%;
-        }
-
-        .footer-social a i {
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-social a:hover::before {
-            transform: scale(1);
-        }
-
-        .footer-social a:hover {
-            color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(255, 0, 64, 0.5);
-        }
-
+        
         /* Footer */
         footer {
-            background: var(--secondary-bg);
-            border-top: 1px solid rgba(255, 0, 64, 0.2);
-            padding: 3rem 2rem 1rem;
-            text-align: center;
+            background: var(--secondary);
+            color: var(--light);
+            padding: 4rem 5% 2rem;
         }
-
+        
         .footer-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
-
+        
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
         .footer-logo {
-            font-family: 'Teko', sans-serif;
-            font-size: 3rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff6b9d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-
-        .footer-social {
+        
+        .footer-logo span {
+            color: var(--primary);
+        }
+        
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            margin: 2rem 0;
         }
-
-        .footer-social a {
-            width: 50px;
-            height: 50px;
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--primary);
             border-radius: 50%;
-            border: 2px solid var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--accent);
+            color: var(--primary);
             text-decoration: none;
             transition: all 0.3s ease;
-            font-size: 1.3rem;
         }
-
-        .footer-social a:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(255, 0, 64, 0.5);
+        
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
         }
-
-        .footer-text {
-            color: var(--text-secondary);
-            margin-top: 2rem;
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
         }
-
-        /* Responsive Design */
-        @media (max-width: 968px) {
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
             .nav-links {
-                display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: var(--light);
+                flex-direction: column;
+                padding: 6rem 2rem;
+                box-shadow: -5px 0 20px var(--shadow);
+                transition: right 0.3s ease;
+                align-items: flex-start;
             }
-
-            .mobile-menu-toggle {
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .menu-toggle {
                 display: flex;
+                z-index: 1001;
             }
-
-            .contact-container {
+            
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+            
+            .contact-container,
+            .footer-content {
                 grid-template-columns: 1fr;
             }
-
-            .hero-title {
-                font-size: 4rem;
+            
+            .search-box {
+                flex-direction: column;
             }
-
-            .cta-buttons {
+            
+            .search-field {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 4rem 5%;
+            }
+            
+            .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-
-            .cta-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            section {
-                padding: 4rem 1rem;
-            }
-
-            .features-grid,
-            .programs-grid,
-            .trainers-grid,
-            .pricing-grid {
+            
+            .properties-grid,
+            .services-grid,
+            .testimonials-grid {
                 grid-template-columns: 1fr;
             }
-
-            .transformation-card,
-            .testimonial-card {
-                min-width: 280px;
-            }
-
-            .floating-buttons {
-                bottom: 1rem;
-                right: 1rem;
-            }
-
-            .floating-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-            }
-
-            .chatbot-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 1.7rem;
-            }
-
+            
             .chatbot-window {
-                width: 95vw;
-                height: 70vh;
-                right: 50%;
-                transform: translateX(50%);
+                width: 300px;
             }
-
-            .chatbot-window.active {
-                transform: translateX(50%);
+            
+            .footer-content {
+                gap: 2rem;
             }
-
-            .scroll-to-top {
-                width: 50px;
-                height: 50px;
-                bottom: 160px;
-                right: 1rem;
-            }
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-
-        .scale-in {
-            opacity: 1 !important;
-            transform: scale(1) !important;
-        }
-
-        .slide-in {
-            opacity: 1 !important;
-            transform: translateY(0) rotateX(0deg) !important;
-        }
-
-        /* Noise texture overlay */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/></svg>');
-            pointer-events: none;
-            z-index: 9999;
         }
     </style>
 </head>
 <body>
-    <!-- Animated Particles Background -->
-    <div id="particles-js"></div>
-
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">APEX</div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#programs">Programs</a></li>
-            <li><a href="#trainers">Trainers</a></li>
-            <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <button class="nav-cta">JOIN NOW</button>
-        <button class="mobile-menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-3d-container">
-            <!-- High-quality gym background from Unsplash -->
-            <div style="width: 100%; height: 100%; 
-                        background: linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.7)), 
-                                    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
-                        position: relative;
-                        animation: kenBurns 20s ease-in-out infinite alternate;">
-            </div>
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">BUILD YOUR<br>BEAST MODE</h1>
-            <p class="hero-subtitle">JOIN THE MOST POWERFUL FITNESS COMMUNITY</p>
-            <div class="cta-buttons">
-                <button class="cta-btn cta-primary"><span>JOIN NOW</span></button>
-                <button class="cta-btn cta-secondary"><span>BOOK FREE TRIAL</span></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Us -->
-    <section id="features" style="background: var(--secondary-bg);">
-        <h2 class="section-title">WHY CHOOSE APEX</h2>
-        <p class="section-subtitle">Experience the difference with premium facilities and expert guidance</p>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">💪</div>
-                <h3 class="feature-title">Personal Training</h3>
-                <p class="feature-description">One-on-one coaching with certified trainers who push you beyond your limits</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🏃</div>
-                <h3 class="feature-title">Modern Equipment</h3>
-                <p class="feature-description">State-of-the-art machines and free weights for every fitness goal</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔥</div>
-                <h3 class="feature-title">CrossFit & Cardio</h3>
-                <p class="feature-description">Dedicated zones for high-intensity training and endurance building</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💰</div>
-                <h3 class="feature-title">Affordable Plans</h3>
-                <p class="feature-description">Flexible membership options that fit your budget and lifestyle</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">👥</div>
-                <h3 class="feature-title">Community Support</h3>
-                <p class="feature-description">Train with like-minded warriors and build lasting friendships</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3 class="feature-title">Track Progress</h3>
-                <p class="feature-description">Advanced tracking systems to monitor your transformation journey</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Programs -->
-    <section id="programs">
-        <h2 class="section-title">TRAINING PROGRAMS</h2>
-        <p class="section-subtitle">Choose your path to greatness</p>
-        <div class="programs-grid">
-            <div class="program-card">
-                <div class="program-icon">🏋️</div>
-                <h3 class="program-title">Weight Training</h3>
-                <p class="program-description">Build muscle and strength with progressive overload</p>
-            </div>
-            <div class="program-card">
-                <div class="program-icon">⚡</div>
-                <h3 class="program-title">CrossFit</h3>
-                <p class="program-description">High-intensity functional fitness</p>
-            </div>
-            <div class="program-card">
-                <div class="program-icon">🏃</div>
-                <h3 class="program-title">Cardio</h3>
-                <p class="program-description">Boost endurance and burn calories</p>
-            </div>
-            <div class="program-card">
-                <div class="program-icon">🥊</div>
-                <h3 class="program-title">Boxing & HIIT</h3>
-                <p class="program-description">Combat training meets metabolic conditioning</p>
-            </div>
-            <div class="program-card">
-                <div class="program-icon">🧘</div>
-                <h3 class="program-title">Yoga</h3>
-                <p class="program-description">Flexibility, balance, and mindfulness</p>
-            </div>
-            <div class="program-card">
-                <div class="program-icon">💃</div>
-                <h3 class="program-title">Zumba</h3>
-                <p class="program-description">Dance your way to fitness</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trainers -->
-    <section id="trainers" style="background: var(--secondary-bg);">
-        <h2 class="section-title">MEET YOUR TRAINERS</h2>
-        <p class="section-subtitle">Expert coaches dedicated to your transformation</p>
-        <div class="trainers-grid">
-            <div class="trainer-card">
-                <div class="trainer-image" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop');">
-                </div>
-                <div class="trainer-info">
-                    <h3 class="trainer-name">Marcus Steel</h3>
-                    <p class="trainer-specialty">Strength & Conditioning</p>
-                    <p class="trainer-experience">8 years experience • NASM Certified</p>
-                    <div class="trainer-socials">
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="trainer-card">
-                <div class="trainer-image" style="background-image: url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2020&auto=format&fit=crop');">
-                </div>
-                <div class="trainer-info">
-                    <h3 class="trainer-name">Alexa Fierce</h3>
-                    <p class="trainer-specialty">CrossFit & HIIT</p>
-                    <p class="trainer-experience">6 years experience • CrossFit L2</p>
-                    <div class="trainer-socials">
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="trainer-card">
-                <div class="trainer-image" style="background-image: url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=2070&auto=format&fit=crop');">
-                </div>
-                <div class="trainer-info">
-                    <h3 class="trainer-name">Derek Power</h3>
-                    <p class="trainer-specialty">Bodybuilding & Nutrition</p>
-                    <p class="trainer-experience">10 years experience • IFBB Pro</p>
-                    <div class="trainer-socials">
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Transformations -->
-    <section id="transformations">
-        <h2 class="section-title">REAL TRANSFORMATIONS</h2>
-        <p class="section-subtitle">See the incredible results our members have achieved</p>
-        <div class="transformation-slider">
-            <div class="transformation-track">
-                <div class="transformation-card">
-                    <div class="transformation-images">
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1583454155184-870a1f63a8b9?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">Before</div>
-                        </div>
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1605296867424-35fc25c9212a?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">After</div>
-                        </div>
-                    </div>
-                    <div class="transformation-details">
-                        <h3 class="transformation-name">John Rodriguez</h3>
-                        <p class="transformation-stats">Lost 40 lbs in 6 months</p>
-                    </div>
-                </div>
-                <div class="transformation-card">
-                    <div class="transformation-images">
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=2075&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">Before</div>
-                        </div>
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1550345332-09e3ac987658?q=80&w=2087&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">After</div>
-                        </div>
-                    </div>
-                    <div class="transformation-details">
-                        <h3 class="transformation-name">Sarah Mitchell</h3>
-                        <p class="transformation-stats">Gained 15 lbs muscle in 4 months</p>
-                    </div>
-                </div>
-                <div class="transformation-card">
-                    <div class="transformation-images">
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?q=80&w=2069&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">Before</div>
-                        </div>
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">After</div>
-                        </div>
-                    </div>
-                    <div class="transformation-details">
-                        <h3 class="transformation-name">Mike Thompson</h3>
-                        <p class="transformation-stats">Complete body recomp in 8 months</p>
-                    </div>
-                </div>
-                <!-- Duplicate for infinite scroll effect -->
-                <div class="transformation-card">
-                    <div class="transformation-images">
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1583454155184-870a1f63a8b9?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">Before</div>
-                        </div>
-                        <div class="transformation-img" style="background-image: url('https://images.unsplash.com/photo-1605296867424-35fc25c9212a?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
-                            <div class="transformation-label">After</div>
-                        </div>
-                    </div>
-                    <div class="transformation-details">
-                        <h3 class="transformation-name">John Rodriguez</h3>
-                        <p class="transformation-stats">Lost 40 lbs in 6 months</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing" style="background: var(--secondary-bg);">
-        <h2 class="section-title">MEMBERSHIP PLANS</h2>
-        <p class="section-subtitle">Invest in your future self</p>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3 class="plan-name">Monthly</h3>
-                <div class="plan-price">$49</div>
-                <p class="plan-period">per month</p>
-                <ul class="plan-features">
-                    <li>Full gym access</li>
-                    <li>All group classes</li>
-                    <li>Locker & shower facilities</li>
-                    <li>Mobile app access</li>
-                    <li>Cancel anytime</li>
-                </ul>
-                <button class="plan-btn">GET STARTED</button>
-            </div>
-            <div class="pricing-card featured">
-                <div class="popular-badge">MOST POPULAR</div>
-                <h3 class="plan-name">Quarterly</h3>
-                <div class="plan-price">$129</div>
-                <p class="plan-period">per 3 months</p>
-                <ul class="plan-features">
-                    <li>Everything in Monthly</li>
-                    <li>2 personal training sessions</li>
-                    <li>Nutrition consultation</li>
-                    <li>Body composition analysis</li>
-                    <li>Guest pass (2x/month)</li>
-                    <li>Exclusive member events</li>
-                </ul>
-                <button class="plan-btn">GET STARTED</button>
-            </div>
-            <div class="pricing-card">
-                <h3 class="plan-name">Yearly</h3>
-                <div class="plan-price">$399</div>
-                <p class="plan-period">per year</p>
-                <ul class="plan-features">
-                    <li>Everything in Quarterly</li>
-                    <li>Unlimited personal training</li>
-                    <li>Priority class booking</li>
-                    <li>Free merchandise</li>
-                    <li>Freeze membership (30 days)</li>
-                    <li>VIP lounge access</li>
-                    <li>Meal planning service</li>
-                </ul>
-                <button class="plan-btn">GET STARTED</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials">
-        <h2 class="section-title">WHAT OUR MEMBERS SAY</h2>
-        <p class="section-subtitle">Join thousands of satisfied members</p>
-        <div class="testimonials-container">
-            <div class="testimonials-track">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"Best gym I've ever been to! The trainers are incredible and the equipment is top-notch. I've achieved results I never thought possible."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JD</div>
-                        <div class="author-info">
-                            <h4>James Davis</h4>
-                            <p>Member since 2023</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"The community here is amazing! Everyone is so supportive and motivating. I actually look forward to my workouts now."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">LC</div>
-                        <div class="author-info">
-                            <h4>Lisa Chen</h4>
-                            <p>Member since 2022</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"I've tried many gyms, but APEX is on another level. The facilities are pristine and the atmosphere is electric. Worth every penny!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MJ</div>
-                        <div class="author-info">
-                            <h4>Michael Johnson</h4>
-                            <p>Member since 2024</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Duplicates for infinite scroll -->
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"Best gym I've ever been to! The trainers are incredible and the equipment is top-notch. I've achieved results I never thought possible."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JD</div>
-                        <div class="author-info">
-                            <h4>James Davis</h4>
-                            <p>Member since 2023</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"The community here is amazing! Everyone is so supportive and motivating. I actually look forward to my workouts now."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">LC</div>
-                        <div class="author-info">
-                            <h4>Lisa Chen</h4>
-                            <p>Member since 2022</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" style="background: var(--secondary-bg);">
-        <h2 class="section-title">VISIT US TODAY</h2>
-        <p class="section-subtitle">Come experience APEX for yourself</p>
-        <div class="contact-container">
-            <div class="contact-info">
-                <div class="contact-item">
-                    <div class="contact-icon">📍</div>
-                    <div class="contact-details">
-                        <h3>Location</h3>
-                        <p>123 Fitness Street, Downtown District<br>New York, NY 10001</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">🕐</div>
-                    <div class="contact-details">
-                        <h3>Hours</h3>
-                        <p>Monday - Friday: 5:00 AM - 11:00 PM<br>
-                           Saturday - Sunday: 6:00 AM - 10:00 PM</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">📞</div>
-                    <div class="contact-details">
-                        <h3>Contact</h3>
-                        <p>Phone: (555) 123-4567<br>
-                           Email: info@apexfitness.com</p>
-                    </div>
-                </div>
-            </div>
-            <div class="map-container">
-                <div class="map-placeholder">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">🗺️</div>
-                    <p>Google Maps Integration</p>
-                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Replace with actual Google Maps embed</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">APEX FITNESS</div>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Transform Your Body. Transform Your Life.</p>
-            <div class="footer-social">
-                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" title="TikTok"><i class="fab fa-tiktok"></i></a>
-            </div>
-            <p class="footer-text">&copy; 2026 APEX Fitness. All rights reserved. | Privacy Policy | Terms of Service</p>
-        </div>
-    </footer>
-
-    <!-- Floating Action Buttons -->
-    <div class="floating-buttons">
-        <button class="floating-btn" title="WhatsApp" id="whatsapp-btn"><i class="fab fa-whatsapp"></i></button>
-        <button class="floating-btn" title="Call Us" id="call-btn"><i class="fas fa-phone-alt"></i></button>
-    </div>
-
     <!-- Scroll to Top Button -->
-    <button class="scroll-to-top" id="scrollToTop">
+    <button class="scroll-top" id="scrollTop">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-    <!-- Chatbot -->
+    
+    <!-- Chatbot Widget -->
     <div class="chatbot-container">
         <button class="chatbot-toggle" id="chatbotToggle">
             <i class="fas fa-comments"></i>
-            <span class="chatbot-badge">1</span>
         </button>
         <div class="chatbot-window" id="chatbotWindow">
             <div class="chatbot-header">
-                <div class="chatbot-header-info">
-                    <div class="chatbot-avatar">🤖</div>
-                    <div class="chatbot-header-text">
-                        <h3>APEX Assistant</h3>
-                        <p>Online now</p>
-                    </div>
-                </div>
+                <h3><i class="fas fa-robot"></i> Property Assistant</h3>
                 <button class="chatbot-close" id="chatbotClose">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="chatbot-messages" id="chatMessages">
-                <div class="chat-message">
-                    <div class="message-avatar">🤖</div>
-                    <div class="message-content">
-                        <p>Hey there! 💪 Welcome to APEX Fitness! I'm here to help you start your transformation journey. How can I assist you today?</p>
-                        <div class="message-time">Just now</div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    <div class="message-bubble">
+                        Hello! I'm your property assistant. How can I help you today?
                     </div>
                 </div>
             </div>
-            <div class="chatbot-quick-replies">
-                <button class="quick-reply-btn" data-reply="membership">Membership Plans</button>
-                <button class="quick-reply-btn" data-reply="trial">Free Trial</button>
-                <button class="quick-reply-btn" data-reply="hours">Opening Hours</button>
-                <button class="quick-reply-btn" data-reply="trainers">Our Trainers</button>
-            </div>
             <div class="chatbot-input-area">
-                <input type="text" class="chatbot-input" id="chatInput" placeholder="Type your message...">
-                <button class="chatbot-send" id="chatSend">
+                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message...">
+                <button class="chatbot-send" id="chatbotSend">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
         </div>
     </div>
-
-    <!-- Sticky Join Button -->
-    <button class="sticky-join">JOIN NOW - LIMITED SPOTS</button>
-
-    <!-- JavaScript -->
+    
+    <!-- Three.js Canvas -->
+    <canvas id="three-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav>
+        <a href="#home" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <span class="logo-text">Luxe<span>Estate</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact" class="nav-cta">Schedule Visit</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Luxury Living Redefined</p>
+            <h1 class="hero-title">Find Your Dream Home</h1>
+            <p class="hero-description">Discover exclusive properties that perfectly match your lifestyle and aspirations. Your journey to luxury living starts here.</p>
+            <div class="hero-buttons">
+                <a href="#properties" class="btn-primary">Explore Properties</a>
+                <a href="#contact" class="btn-secondary">Contact Agent</a>
+            </div>
+        </div>
+        
+        <div class="search-box">
+            <div class="search-field">
+                <label>Property Type</label>
+                <select>
+                    <option>Apartment</option>
+                    <option>Villa</option>
+                    <option>Penthouse</option>
+                    <option>Commercial</option>
+                </select>
+            </div>
+            <div class="search-field">
+                <label>Location</label>
+                <input type="text" placeholder="Enter location">
+            </div>
+            <div class="search-field">
+                <label>Price Range</label>
+                <select>
+                    <option>$100k - $300k</option>
+                    <option>$300k - $500k</option>
+                    <option>$500k - $1M</option>
+                    <option>$1M+</option>
+                </select>
+            </div>
+            <button class="search-btn">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </section>
+    
+    <!-- Featured Properties -->
+    <section id="properties">
+        <div class="section-header">
+            <p class="section-subtitle">Premium Selection</p>
+            <h2 class="section-title">Featured Properties</h2>
+            <p class="section-description">Handpicked luxury properties that offer exceptional value and unmatched elegance</p>
+        </div>
+        
+        <div class="properties-grid">
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Modern Villa">
+                    <span class="property-badge">For Sale</span>
+                </div>
+                <div class="property-details">
+                    <div class="property-price">$850,000</div>
+                    <h3 class="property-title">Modern Luxury Villa</h3>
+                    <p class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Beverly Hills, Los Angeles
+                    </p>
+                    <div class="property-features">
+                        <span class="feature">
+                            <i class="fas fa-bed"></i> 4 Beds
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-bath"></i> 3 Baths
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-ruler-combined"></i> 3,200 sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Penthouse">
+                    <span class="property-badge">For Rent</span>
+                </div>
+                <div class="property-details">
+                    <div class="property-price">$5,500/mo</div>
+                    <h3 class="property-title">Sky High Penthouse</h3>
+                    <p class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Manhattan, New York
+                    </p>
+                    <div class="property-features">
+                        <span class="feature">
+                            <i class="fas fa-bed"></i> 3 Beds
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-bath"></i> 2 Baths
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-ruler-combined"></i> 2,400 sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80" alt="Beachfront">
+                    <span class="property-badge">For Sale</span>
+                </div>
+                <div class="property-details">
+                    <div class="property-price">$1,250,000</div>
+                    <h3 class="property-title">Beachfront Paradise</h3>
+                    <p class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Miami Beach, Florida
+                    </p>
+                    <div class="property-features">
+                        <span class="feature">
+                            <i class="fas fa-bed"></i> 5 Beds
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-bath"></i> 4 Baths
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-ruler-combined"></i> 4,500 sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="Contemporary">
+                    <span class="property-badge">For Sale</span>
+                </div>
+                <div class="property-details">
+                    <div class="property-price">$675,000</div>
+                    <h3 class="property-title">Contemporary Elegance</h3>
+                    <p class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Austin, Texas
+                    </p>
+                    <div class="property-features">
+                        <span class="feature">
+                            <i class="fas fa-bed"></i> 3 Beds
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-bath"></i> 2.5 Baths
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-ruler-combined"></i> 2,800 sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80" alt="Family Home">
+                    <span class="property-badge">For Rent</span>
+                </div>
+                <div class="property-details">
+                    <div class="property-price">$4,200/mo</div>
+                    <h3 class="property-title">Suburban Family Home</h3>
+                    <p class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        San Diego, California
+                    </p>
+                    <div class="property-features">
+                        <span class="feature">
+                            <i class="fas fa-bed"></i> 4 Beds
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-bath"></i> 3 Baths
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-ruler-combined"></i> 3,000 sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80" alt="Mountain View">
+                    <span class="property-badge">For Sale</span>
+                </div>
+                <div class="property-details">
+                    <div class="property-price">$920,000</div>
+                    <h3 class="property-title">Mountain View Estate</h3>
+                    <p class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Denver, Colorado
+                    </p>
+                    <div class="property-features">
+                        <span class="feature">
+                            <i class="fas fa-bed"></i> 4 Beds
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-bath"></i> 3.5 Baths
+                        </span>
+                        <span class="feature">
+                            <i class="fas fa-ruler-combined"></i> 3,600 sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services -->
+    <section id="services" style="background: var(--gray-light);">
+        <div class="section-header">
+            <p class="section-subtitle">What We Offer</p>
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-description">Comprehensive real estate solutions tailored to your unique needs</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Buy Property</h3>
+                <p>Find your perfect home from our extensive portfolio of premium properties across prime locations.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h3>Sell Property</h3>
+                <p>Get the best value for your property with our expert marketing and negotiation services.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3>Rent Property</h3>
+                <p>Discover rental properties that match your lifestyle and budget with flexible lease terms.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Property Valuation</h3>
+                <p>Accurate property assessments based on current market trends and comprehensive analysis.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Consultation</h3>
+                <p>Expert advice on real estate investments, market insights, and property management.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3>Commercial Real Estate</h3>
+                <p>Premium office spaces and commercial properties for your business growth.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <div class="section-header">
+            <p class="section-subtitle">Client Reviews</p>
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="section-description">Real stories from satisfied homeowners and investors</p>
+        </div>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"LuxeEstate made my dream of owning a beachfront property come true. Their team was professional, patient, and incredibly knowledgeable about the market."</p>
+                <div class="testimonial-author">
+                    <img src="https://i.pravatar.cc/150?img=1" alt="Sarah Johnson" class="author-image">
+                    <div class="author-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>Property Owner</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"Outstanding service! They helped me find the perfect investment property and guided me through every step of the process. Highly recommended!"</p>
+                <div class="testimonial-author">
+                    <img src="https://i.pravatar.cc/150?img=12" alt="Michael Chen" class="author-image">
+                    <div class="author-info">
+                        <h4>Michael Chen</h4>
+                        <p>Real Estate Investor</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"The virtual tours and detailed property information made it so easy to find exactly what we wanted. Excellent experience from start to finish!"</p>
+                <div class="testimonial-author">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="Emily Rodriguez" class="author-image">
+                    <div class="author-info">
+                        <h4>Emily Rodriguez</h4>
+                        <p>Homebuyer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact -->
+    <section id="contact">
+        <div class="section-header">
+            <p class="section-subtitle">Get In Touch</p>
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-description">Ready to find your dream property? Let's start the conversation</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Let's Connect</h3>
+                <p style="color: var(--gray); margin-bottom: 2rem;">Have questions? We're here to help you every step of the way.</p>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Visit Us</h4>
+                        <p>123 Luxury Avenue, Downtown<br>Los Angeles, CA 90012</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Call Us</h4>
+                        <p>+1 (555) 123-4567<br>Mon-Sat: 9AM - 6PM</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Email Us</h4>
+                        <p>info@luxeestate.com<br>support@luxeestate.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form-container">
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel">
+                    </div>
+                    <div class="form-group">
+                        <label>I'm Interested In</label>
+                        <select>
+                            <option>Buying Property</option>
+                            <option>Selling Property</option>
+                            <option>Renting Property</option>
+                            <option>Property Valuation</option>
+                            <option>Consultation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message *</label>
+                        <textarea required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                        Send Message <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h2 class="footer-logo">Luxe<span>Estate</span></h2>
+                <p class="footer-description">Your trusted partner in luxury real estate. We help you find not just a house, but a home where memories are made.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Property Types</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Luxury Villas</a></li>
+                    <li><a href="#">Apartments</a></li>
+                    <li><a href="#">Penthouses</a></li>
+                    <li><a href="#">Commercial</a></li>
+                    <li><a href="#">Beachfront</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Buying Guide</a></li>
+                    <li><a href="#">Selling Guide</a></li>
+                    <li><a href="#">Market Insights</a></li>
+                    <li><a href="#">Mortgage Calculator</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 LuxeEstate. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+    
     <script>
-        // Particles.js Configuration
-        particlesJS('particles-js', {
-            particles: {
-                number: {
-                    value: 80,
-                    density: {
-                        enable: true,
-                        value_area: 800
-                    }
-                },
-                color: {
-                    value: '#ff0040'
-                },
-                shape: {
-                    type: 'circle',
-                },
-                opacity: {
-                    value: 0.3,
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 1,
-                        opacity_min: 0.1,
-                        sync: false
-                    }
-                },
-                size: {
-                    value: 3,
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 2,
-                        size_min: 0.1,
-                        sync: false
-                    }
-                },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: '#ff0040',
-                    opacity: 0.2,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 2,
-                    direction: 'none',
-                    random: true,
-                    straight: false,
-                    out_mode: 'out',
-                    bounce: false,
-                }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: {
-                        enable: true,
-                        mode: 'repulse'
-                    },
-                    onclick: {
-                        enable: true,
-                        mode: 'push'
-                    },
-                    resize: true
-                },
-                modes: {
-                    repulse: {
-                        distance: 100,
-                        duration: 0.4
-                    },
-                    push: {
-                        particles_nb: 4
-                    }
-                }
-            },
-            retina_detect: true
-        });
-
-        // Ken Burns animation for hero background
-        const kenBurnsStyle = document.createElement('style');
-        kenBurnsStyle.textContent = `
-            @keyframes kenBurns {
-                0% { transform: scale(1) translateX(0) translateY(0); }
-                50% { transform: scale(1.1) translateX(-2%) translateY(-2%); }
-                100% { transform: scale(1) translateX(0) translateY(0); }
-            }
-        `;
-        document.head.appendChild(kenBurnsStyle);
-
-        // GSAP ScrollTrigger setup
+        // GSAP Setup
         gsap.registerPlugin(ScrollTrigger);
-
-        // Smooth scroll animation for navigation
-        const navLinks = document.querySelectorAll('.nav-links a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Three.js Scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('three-canvas'),
+            alpha: true,
+            antialias: true
+        });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        camera.position.z = 5;
+        
+        // Create subtle 3D particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 800;
+        const positions = new Float32Array(particlesCount * 3);
+        
+        for (let i = 0; i < particlesCount * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 15;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.03,
+            color: 0xd4af37,
+            transparent: true,
+            opacity: 0.6
+        });
+        
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+        
+        // Ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.y += 0.0003;
+            particles.rotation.x += 0.0001;
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // GSAP Animations
+        window.addEventListener('load', () => {
+            // Hero animation
+            gsap.to('.hero-content', {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: 'power3.out'
+            });
+            
+            gsap.to('.search-box', {
+                opacity: 1,
+                duration: 1,
+                delay: 0.5,
+                ease: 'power3.out'
+            });
+            
+            // Section headers
+            gsap.utils.toArray('.section-header').forEach(header => {
+                gsap.to(header, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: header,
+                        start: 'top 80%'
+                    }
+                });
+            });
+            
+            // Property cards
+            gsap.utils.toArray('.property-card').forEach((card, i) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%'
+                    }
+                });
+            });
+            
+            // Service cards
+            gsap.utils.toArray('.service-card').forEach((card, i) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    rotateX: 0,
+                    duration: 0.8,
+                    delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%'
+                    }
+                });
+            });
+            
+            // Testimonials
+            gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.8,
+                    delay: i * 0.15,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%'
+                    }
+                });
+            });
+            
+            // Contact sections
+            gsap.to('.contact-info', {
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: '.contact-container',
+                    start: 'top 70%'
+                }
+            });
+            
+            gsap.to('.contact-form-container', {
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: '.contact-container',
+                    start: 'top 70%'
                 }
             });
         });
-
-        // Navigation scroll effect
-        const nav = document.querySelector('nav');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
+        
+        // Mobile Menu
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
         });
-
-        // Sticky join button and scroll to top button
-        const stickyJoin = document.querySelector('.sticky-join');
-        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Scroll to Top
+        const scrollTop = document.getElementById('scrollTop');
         
         window.addEventListener('scroll', () => {
-            if (window.scrollY > window.innerHeight) {
-                stickyJoin.classList.add('visible');
-                scrollToTopBtn.classList.add('visible');
+            if (window.scrollY > 500) {
+                scrollTop.classList.add('active');
             } else {
-                stickyJoin.classList.remove('visible');
-                scrollToTopBtn.classList.remove('visible');
+                scrollTop.classList.remove('active');
             }
         });
-
-        // Scroll to top functionality
-        scrollToTopBtn.addEventListener('click', () => {
+        
+        scrollTop.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
-
-        // Feature cards animation
-        const featureCards = document.querySelectorAll('.feature-card');
-        featureCards.forEach((card, index) => {
-            gsap.to(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 80%',
-                    end: 'top 50%',
-                    scrub: 1
-                },
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                delay: index * 0.1
-            });
-        });
-
-        // Program cards animation
-        const programCards = document.querySelectorAll('.program-card');
-        programCards.forEach((card, index) => {
-            gsap.to(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 80%',
-                    end: 'top 50%',
-                    scrub: 1
-                },
-                opacity: 1,
-                scale: 1,
-                duration: 0.8,
-                delay: index * 0.1
-            });
-        });
-
-        // Trainer cards animation
-        const trainerCards = document.querySelectorAll('.trainer-card');
-        trainerCards.forEach((card, index) => {
-            gsap.to(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 80%',
-                    end: 'top 50%',
-                    scrub: 1
-                },
-                opacity: 1,
-                y: 0,
-                rotateX: 0,
-                duration: 0.8,
-                delay: index * 0.1
-            });
-        });
-
-        // Pricing cards animation
-        const pricingCards = document.querySelectorAll('.pricing-card');
-        pricingCards.forEach((card, index) => {
-            gsap.to(card, {
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 80%',
-                    end: 'top 50%',
-                    scrub: 1
-                },
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                delay: index * 0.1
-            });
-        });
-
-        // Hero parallax effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero3D = document.querySelector('.hero-3d-container');
-            if (hero3D) {
-                hero3D.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
-
-        // 3D tilt effect on cards (mouse move)
-        const cards = document.querySelectorAll('.feature-card, .program-card, .trainer-card, .pricing-card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-            });
-        });
-
-        // CTA button click handlers
-        const ctaButtons = document.querySelectorAll('.cta-btn, .nav-cta, .plan-btn, .sticky-join');
-        ctaButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                alert('Membership registration coming soon! Contact us at (555) 123-4567');
-            });
-        });
-
-        // Floating buttons
-        const whatsappBtn = document.getElementById('whatsapp-btn');
-        const callBtn = document.getElementById('call-btn');
         
-        whatsappBtn.addEventListener('click', () => {
-            window.open('https://wa.me/15551234567?text=Hi! I want to know more about APEX Fitness membership', '_blank');
-        });
-        
-        callBtn.addEventListener('click', () => {
-            window.location.href = 'tel:+15551234567';
-        });
-
-        // Chatbot functionality
+        // Chatbot
         const chatbotToggle = document.getElementById('chatbotToggle');
         const chatbotWindow = document.getElementById('chatbotWindow');
         const chatbotClose = document.getElementById('chatbotClose');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const chatSend = document.getElementById('chatSend');
-        const quickReplyButtons = document.querySelectorAll('.quick-reply-btn');
-        const chatbotBadge = document.querySelector('.chatbot-badge');
-
+        const chatbotSend = document.getElementById('chatbotSend');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        
         chatbotToggle.addEventListener('click', () => {
-            chatbotWindow.classList.toggle('active');
-            chatbotBadge.style.display = 'none';
+            chatbotWindow.classList.add('active');
         });
-
+        
         chatbotClose.addEventListener('click', () => {
             chatbotWindow.classList.remove('active');
         });
-
-        function addMessage(message, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${isUser ? 'user' : ''}`;
-            
-            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${isUser ? '👤' : '🤖'}</div>
-                <div class="message-content">
-                    <p>${message}</p>
-                    <div class="message-time">${time}</div>
-                </div>
-            `;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function getBotResponse(userMessage) {
-            const message = userMessage.toLowerCase();
-            
-            if (message.includes('membership') || message.includes('plan')) {
-                return "We offer 3 membership plans: 💪 Monthly ($49), Quarterly ($129 - Most Popular), and Yearly ($399). All include full gym access, group classes, and more! Which one interests you?";
-            } else if (message.includes('trial') || message.includes('free')) {
-                return "Awesome! 🎉 We offer a FREE trial session! Just call us at (555) 123-4567 or visit us at 123 Fitness Street to book your trial. No commitment required!";
-            } else if (message.includes('hour') || message.includes('time') || message.includes('open')) {
-                return "We're open: 🕐 Mon-Fri: 5:00 AM - 11:00 PM | Sat-Sun: 6:00 AM - 10:00 PM. We're here when you need us!";
-            } else if (message.includes('trainer') || message.includes('coach')) {
-                return "Our expert trainers are certified professionals with years of experience! Meet Marcus (Strength), Alexa (CrossFit), and Derek (Bodybuilding). Want to book a session? 💪";
-            } else if (message.includes('price') || message.includes('cost')) {
-                return "Our pricing starts at just $49/month! We also have quarterly ($129) and yearly ($399) plans with amazing benefits. Want more details?";
-            } else if (message.includes('location') || message.includes('address')) {
-                return "📍 We're located at 123 Fitness Street, Downtown District, New York, NY 10001. See you soon!";
-            } else if (message.includes('hi') || message.includes('hello') || message.includes('hey')) {
-                return "Hey! 👋 Welcome to APEX Fitness! Ready to transform your life? I can help you with memberships, trainers, schedules, and more!";
-            } else {
-                return "Great question! 💡 I can help you with: Membership Plans, Free Trial, Opening Hours, Our Trainers, and Location. What would you like to know?";
-            }
-        }
-
-        chatSend.addEventListener('click', () => {
-            const message = chatInput.value.trim();
-            if (message) {
-                addMessage(message, true);
-                chatInput.value = '';
-                
-                setTimeout(() => {
-                    const response = getBotResponse(message);
-                    addMessage(response, false);
-                }, 1000);
-            }
-        });
-
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                chatSend.click();
-            }
-        });
-
-        quickReplyButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const reply = button.getAttribute('data-reply');
-                let message = '';
-                
-                switch(reply) {
-                    case 'membership':
-                        message = 'Tell me about membership plans';
-                        break;
-                    case 'trial':
-                        message = 'How can I get a free trial?';
-                        break;
-                    case 'hours':
-                        message = 'What are your opening hours?';
-                        break;
-                    case 'trainers':
-                        message = 'Tell me about your trainers';
-                        break;
-                }
-                
-                addMessage(message, true);
-                setTimeout(() => {
-                    const response = getBotResponse(message);
-                    addMessage(response, false);
-                }, 1000);
-            });
-        });
-
-        // Mobile menu toggle
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        const navLinksContainer = document.querySelector('.nav-links');
         
-        mobileToggle.addEventListener('click', () => {
-            navLinksContainer.style.display = navLinksContainer.style.display === 'flex' ? 'none' : 'flex';
-            if (navLinksContainer.style.display === 'flex') {
-                navLinksContainer.style.position = 'absolute';
-                navLinksContainer.style.top = '100%';
-                navLinksContainer.style.left = '0';
-                navLinksContainer.style.right = '0';
-                navLinksContainer.style.background = 'rgba(10, 10, 10, 0.98)';
-                navLinksContainer.style.flexDirection = 'column';
-                navLinksContainer.style.padding = '2rem';
-                navLinksContainer.style.backdropFilter = 'blur(20px)';
+        function addMessage(message, isBot = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chatbot-message ${isBot ? 'bot' : 'user'}`;
+            messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        function getBotResponse(userMessage) {
+            const msg = userMessage.toLowerCase();
+            
+            if (msg.includes('price') || msg.includes('cost')) {
+                return "Our properties range from $100k to $5M+. I can help you find something in your budget. What's your price range?";
+            } else if (msg.includes('location') || msg.includes('area')) {
+                return "We have properties in prime locations including Beverly Hills, Manhattan, Miami Beach, and more. Which area interests you?";
+            } else if (msg.includes('bedroom') || msg.includes('bed')) {
+                return "We have properties ranging from 1 to 5+ bedrooms. How many bedrooms are you looking for?";
+            } else if (msg.includes('schedule') || msg.includes('visit') || msg.includes('tour')) {
+                return "I'd be happy to schedule a property tour for you! Please provide your email and preferred date, or call us at +1 (555) 123-4567.";
+            } else if (msg.includes('rent') || msg.includes('lease')) {
+                return "We have excellent rental properties available. Monthly rents start from $2,500. Would you like to see our rental listings?";
+            } else if (msg.includes('buy') || msg.includes('purchase')) {
+                return "Great! We have amazing properties for sale. What type of property are you interested in - villa, apartment, or penthouse?";
+            } else if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+                return "Hello! Welcome to LuxeEstate. How can I assist you in finding your dream property today?";
+            } else {
+                return "I'd be happy to help! You can ask me about property prices, locations, scheduling visits, or our available listings. What would you like to know?";
+            }
+        }
+        
+        function sendMessage() {
+            const message = chatbotInput.value.trim();
+            if (message) {
+                addMessage(message, false);
+                chatbotInput.value = '';
+                
+                setTimeout(() => {
+                    const response = getBotResponse(message);
+                    addMessage(response, true);
+                }, 500);
+            }
+        }
+        
+        chatbotSend.addEventListener('click', sendMessage);
+        
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
         });
-
-        // Transformation slider touch support
-        const transformTrack = document.querySelector('.transformation-track');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        transformTrack.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - transformTrack.offsetLeft;
-            scrollLeft = transformTrack.scrollLeft;
-        });
-
-        transformTrack.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-
-        transformTrack.addEventListener('mouseup', () => {
-            isDown = false;
-        });
-
-        transformTrack.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
+        
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const x = e.pageX - transformTrack.offsetLeft;
-            const walk = (x - startX) * 2;
-            transformTrack.scrollLeft = scrollLeft - walk;
+            alert('Thank you for your message! We will get back to you within 24 hours.');
+            e.target.reset();
         });
-
-        // Animated star ratings
-        const ratings = document.querySelectorAll('.testimonial-rating');
-        ratings.forEach(rating => {
-            const stars = rating.textContent;
-            rating.innerHTML = '';
-            stars.split('').forEach((star, index) => {
-                const span = document.createElement('span');
-                span.textContent = star;
-                span.style.display = 'inline-block';
-                span.style.animation = `starPop 0.5s ease ${index * 0.1}s`;
-                rating.appendChild(span);
-            });
-        });
-
-        // Add star pop animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes starPop {
-                0% { transform: scale(0) rotate(0deg); }
-                50% { transform: scale(1.2) rotate(180deg); }
-                100% { transform: scale(1) rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
-        }, observerOptions);
-
-        // Observe all animated elements
-        document.querySelectorAll('.feature-card, .program-card, .trainer-card, .pricing-card').forEach(el => {
-            observer.observe(el);
         });
-
-        // Console easter egg
-        console.log('%c💪 APEX FITNESS 💪', 'font-size: 30px; font-weight: bold; color: #ff0040; text-shadow: 0 0 10px #ff0040;');
-        console.log('%cBuild Your Beast Mode!', 'font-size: 16px; color: #00ff88;');
     </script>
 </body>
 </html>
